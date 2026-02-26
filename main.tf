@@ -22,3 +22,8 @@ resource "azurerm_resource_group" "rg1" {
   name     = "rg-terraform-github-test"
   location = "East US"
 }
+
+resource "azurerm_resource_group" "rg2" {
+  name     = "rg2-terraform-github-test"
+  location = "East US"
+}
