@@ -1,19 +1,17 @@
 name: 'Azure Terraform Deploy'
 
 on:
-  workflow_dispatch: # This enables the "Run Workflow" button in GitHub
+  workflow_dispatch:
   push:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   terraform:
+    name: 'Terraform'
     runs-on: ubuntu-latest
+    
     env:
-      # These link your GitHub Secrets to Terraform
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
