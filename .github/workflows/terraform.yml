@@ -1,16 +1,14 @@
-name: 'Azure Terraform Deploy'
+name: 'Azure Terraform Workflow'
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [ "main" ] # Triggers the APPLY after merge
+  pull_request:
+    branches: [ "main" ] # Triggers the PLAN during code review
 
 jobs:
   terraform:
-    name: 'Terraform'
     runs-on: ubuntu-latest
-    
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -28,7 +26,9 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
-      run: terraform plan
+      run: terraform plan # This always runs so you can see the impact
 
     - name: Terraform Apply
+      # This CRITICAL line ensures Apply ONLY runs on the main branch
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve
